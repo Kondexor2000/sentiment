@@ -1,0 +1,22 @@
+<!-- moje_opinie.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moje Opinie</title>
+</head>
+<body>
+    <h1>Moje Opinie</h1>
+    <!-- Wyświetlanie opinii użytkownika -->
+    <ul>
+        {% for opinia in opinie %}
+            <li>{{ opinia.tresc }} - {{ opinia.punkty }} punktów</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'inzynier_wylogowanie' %}">
+        <button type="button">Wyloguj się</button>
+    </a>
+</body>
+</html>

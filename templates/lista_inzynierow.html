@@ -1,0 +1,26 @@
+<!-- lista_inzynierow.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Inżynierów</title>
+</head>
+<body>
+    <h1>Lista Inżynierów</h1>
+    <!-- Wyświetlanie listy inżynierów -->
+    <ul>
+        {% for inzynier in inzynierowie %}
+            <li>{{ inzynier.inzynier.username }} - {{ inzynier.total_points }} punktów</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'lekarz_wylogowanie' %}">
+        <button type="button">Wyloguj się</button>
+    </a>
+
+    <a href="{% url 'zbierz_opinie' %}">
+        <button type="button">Zbierz opinie</button>
+    </a>
+</body>
+</html>

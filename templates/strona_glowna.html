@@ -1,0 +1,30 @@
+<!-- strona_glowna.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona Główna</title>
+</head>
+<body>
+    <h1>Witaj na Stronie Głównej!</h1>
+
+    <h1>Witaj na Stronie Głównej!</h1>
+    <p>Wybierz, czy chcesz się zalogować jako lekarz czy inżynier:</p>
+
+    <a href="{% url 'lekarz_logowanie' %}">
+        <button type="button">Zaloguj się jako Lekarz</button>
+    </a>
+
+    <a href="{% url 'inzynier_logowanie' %}">
+        <button type="button">Zaloguj się jako Inżynier</button>
+    </a>
+
+    <a href="{% url 'lekarz_rejestracja' %}">
+        <button type="button">Zarejestruj się jako Lekarz</button>
+    </a>
+
+    <a href="{% url 'inzynier_rejestracja' %}">
+        <button type="button">Zarejestruj się jako Inżynier</button>
+</body>
+</html>
