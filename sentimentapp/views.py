@@ -97,15 +97,15 @@ class ZbierzOpinieView(CreateView):
     def get_success_url(self):
         return '/wynik_opinii/' + str(self.object.pk)
 
-
     def form_valid(self, form):
-        opinia = form.save(commit=False)
+        opinia = form.save()
 
         if isinstance(self.request.user, Inzynier):
             opinia.inzynier = self.request.user
             sentyment, created = Sentyment.objects.get_or_create(inzynier=self.request.user)
         else:
             pass
+        super().form_valid(form)
 
         opinia.punkty = self.analizuj_sentyment(opinia.tresc)
         opinia.save()
