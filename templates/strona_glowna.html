@@ -1,3 +1,5 @@
+{% load static %}
+
 <!-- strona_glowna.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -5,10 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strona Główna</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
 </head>
 <body>
-    <h1>Witaj na Stronie Głównej!</h1>
-
     <h1>Witaj na Stronie Głównej!</h1>
     <p>Wybierz, czy chcesz się zalogować jako lekarz czy inżynier:</p>
 

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!-- wynik_opinii.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -5,10 +7,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wynik Opinii</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
 </head>
 <body>
     <h1>Wynik Opinii</h1>
     <!-- Wyświetlanie szczegółów opinii -->
     <p>{{ opinia.tresc }} - {{ opinia.punkty }} punktów</p>
+
+    <a href="{% url 'lista_inzynierow' %}">
+        <button type="button">Zaloguj się jako Lekarz</button>
+    </a>
 </body>
 </html>
