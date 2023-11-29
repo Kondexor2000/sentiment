@@ -105,6 +105,7 @@ class ZbierzOpinieView(CreateView):
             sentyment, created = Sentyment.objects.get_or_create(inzynier=self.request.user)
         else:
             pass
+        super().form_valid(form)
 
         opinia.punkty = self.analizuj_sentyment(opinia.tresc)
         opinia.save()
