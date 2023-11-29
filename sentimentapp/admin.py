@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Slowo
+from .models import Slowo, Sentyment
 
 # Register your models here.
 
@@ -8,3 +8,4 @@ class SłowoAdmin(admin.ModelAdmin):
     list_filter = ['jest_pozytywne']
 
 admin.site.register(Slowo, SłowoAdmin)
+admin.site.register(Sentyment)

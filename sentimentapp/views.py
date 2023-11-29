@@ -63,18 +63,8 @@ class ListaInzynierowView(View):
     template_name = 'lista_inzynierow.html'
 
     def get(self, request, *args, **kwargs):
-        inzynierowie = Sentyment.objects.values('inzynier').order_by('-total_points')
+        inzynierowie = Sentyment.objects.all().order_by('-total_points')
         print("SQL:", str(inzynierowie.query))
-
-        for i, inzynier in enumerate(inzynierowie, start=1):
-            inzynier.rank = i
-            print(f"Inżynier {inzynier.inzynier}: Rank={inzynier.rank}, Points={inzynier.total_points}")
-
-        if inzynierowie:
-            first_inzynier = inzynierowie[0]
-            print(f"First Inzynier: {first_inzynier.inzynier}, Rank: {first_inzynier.rank}, Points: {first_inzynier.total_points}")
-        else:
-            print("Brak danych dla inżynierów.")
 
         opinie = Opinia.objects.filter(inzynier__isnull=False)
         print("Opinie przypisane do inżynierów:", opinie)
@@ -98,27 +88,26 @@ class ZbierzOpinieView(CreateView):
         return '/wynik_opinii/' + str(self.object.pk)
 
     def form_valid(self, form):
-        opinia = form.save()
+        opinia = form.save(commit=False)
+        opinia.punkty = self.analizuj_sentyment(opinia.tresc)
 
         if isinstance(self.request.user, Inzynier):
             opinia.inzynier = self.request.user
+            opinia.save()
+
             sentyment, created = Sentyment.objects.get_or_create(inzynier=self.request.user)
-        else:
-            pass
-        super().form_valid(form)
-
-        opinia.punkty = self.analizuj_sentyment(opinia.tresc)
-        opinia.save()
-
-        # Dodaj ten kod, aby mieć pewność, że self.object został ustawiony po zapisaniu formularza
-        self.object = opinia
-
-        if isinstance(self.request.user, Inzynier):
             sentyment.total_points += opinia.punkty
-            sentyment.save()
 
-        return HttpResponseRedirect(self.get_success_url())
-    
+            # Sprawdź czy obiekt został utworzony
+            if not created:
+                # Obiekt Sentyment już istniał, więc dokonaj aktualizacji pól, jeśli to konieczne
+                sentyment.save()
+
+            # Ustaw self.object na opinia, aby upewnić się, że nie jest None
+            self.object = opinia
+
+        return super().form_valid(form)
+        
     def analizuj_sentyment(self, opinia_text):
         pozytywne_slowa = set(Slowo.objects.filter(jest_pozytywne=True).values_list('slowo', flat=True))
 
