@@ -26,6 +26,7 @@ from sentimentapp.views import (
     InzynierLogoutView,
     ListaInzynierowView,
     MojeOpinieView,
+    LekarzLogoutView,
     StronaGlownaView
 )
 
@@ -39,7 +40,7 @@ urlpatterns = [
     path('lekarz_logowanie/', LekarzLoginView.as_view(), name='lekarz_logowanie'),
     path('inzynier_logowanie/', InzynierLoginView.as_view(), name='inzynier_logowanie'),
     path('inzynier_wylogowanie/', InzynierLogoutView.as_view(), name='inzynier_wylogowanie'),
-    path('lekarz_wylogowanie/', InzynierLogoutView.as_view(), name='lekarz_wylogowanie'),
+    path('lekarz_wylogowanie/', LekarzLogoutView.as_view(), name='lekarz_wylogowanie'),
     path('lista_inzynierow/', ListaInzynierowView.as_view(), name='lista_inzynierow'),
     path('moje_opinie/', MojeOpinieView.as_view(), name='moje_opinie'),
 ]
