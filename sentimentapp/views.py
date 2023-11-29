@@ -88,14 +88,15 @@ class ZbierzOpinieView(CreateView):
         return '/wynik_opinii/' + str(self.object.pk)
 
     def form_valid(self, form):
-        opinia = form.save(commit=False)
+        opinia = form.save()
         opinia.punkty = self.analizuj_sentyment(opinia.tresc)
 
-        if isinstance(self.request.user, Inzynier):
-            opinia.inzynier = self.request.user
+        if isinstance(self.request.user, Lekarz):
+            opinia.lekarz = self.request.user
             opinia.save()
 
-            sentyment, created = Sentyment.objects.get_or_create(inzynier=self.request.user)
+            inzynier = opinia.inzynier
+            sentyment, created = Sentyment.objects.get_or_create(inzynier=inzynier)
             sentyment.total_points += opinia.punkty
 
             # Sprawdź czy obiekt został utworzony
