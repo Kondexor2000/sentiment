@@ -48,7 +48,6 @@ class Inzynier(CustomUser):
 
 class Slowo(models.Model):
     slowo = models.CharField(max_length=50, unique=True)
-    jest_negatywne = models.BooleanField(default=False)
     jest_pozytywne = models.BooleanField(default=False)
 
     def __str__(self):
