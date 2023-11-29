@@ -95,45 +95,33 @@ class ZbierzOpinieView(CreateView):
     template_name = 'zbierz_opinie.html'
 
     def get_success_url(self):
-        if self.object:
-            return '/wynik_opinii/' + str(self.object.pk)
-        else:
-            # Działanie awaryjne, jeśli self.object nie jest ustawione
-            return '/lista_inzynierow'
+        return '/wynik_opinii/' + str(self.object.pk)
 
     def form_valid(self, form):
         opinia = form.save()
 
-        super_response = super().form_valid(form)  # Inicjalizacja super_response
-
         if isinstance(self.request.user, Inzynier):
             opinia.inzynier = self.request.user
             sentyment, created = Sentyment.objects.get_or_create(inzynier=self.request.user)
-            
-            # Wywołaj oryginalną implementację form_valid
-            super_response = super().form_valid(form)
+        else:
+            pass
 
-            opinia.punkty = self.analizuj_sentyment(opinia.tresc)
-            wynik = opinia.punkty
-            baza = Sentyment.objects.create(wynik)
-            baza.save()
+        opinia.punkty = self.analizuj_sentyment(opinia.tresc)
+        opinia.save()
 
-            # Ustaw self.object na opinia, aby upewnić się, że nie jest None
-            self.object = opinia
+        # Dodaj ten kod, aby mieć pewność, że self.object został ustawiony po zapisaniu formularza
+        self.object = opinia
 
-            sentyment.total_points += baza.punkty
+        if isinstance(self.request.user, Inzynier):
+            sentyment.total_points += opinia.punkty
             sentyment.save()
 
-            # Dodaj jawną odpowiedź HttpResponseRedirect
-            return HttpResponseRedirect(self.get_success_url())
-        
-        # Dla innych przypadków (nie Inzynier)
-        return super_response
-
+        return HttpResponseRedirect(self.get_success_url())
+    
     def analizuj_sentyment(self, opinia_text):
         pozytywne_slowa = set(Slowo.objects.filter(jest_pozytywne=True).values_list('slowo', flat=True))
 
-        print("Tekst opinii:", opinia_text)
+        print("Opinia text:", opinia_text)
         print("Pozytywne słowa:", pozytywne_slowa)
 
         punkty = sum([1 if slowo in pozytywne_slowa else 0 for slowo in opinia_text.lower().split()])
