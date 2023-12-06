@@ -15,7 +15,7 @@ from .forms import LekarzRejestracjaForm, InzynierRejestracjaForm, OpiniaForm, L
 # Create your views here.
 
 class StronaGlownaView(View):
-    template_name = 'strona_glowna.html'
+    template_name = 'index.html'
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
