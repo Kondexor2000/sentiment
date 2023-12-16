@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sentimentapp',
-    'templates'
+    'templates',
 ]
 
 MIDDLEWARE = [
